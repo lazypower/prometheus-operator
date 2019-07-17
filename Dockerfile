@@ -1,4 +1,4 @@
-FROM quay.io/prometheus/busybox:latest
+FROM vaporio/foundation
 
 ADD operator /bin/operator
 

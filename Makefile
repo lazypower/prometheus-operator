@@ -1,8 +1,8 @@
 SHELL=/bin/bash -o pipefail
 
 GO_PKG=github.com/coreos/prometheus-operator
-REPO?=quay.io/coreos/prometheus-operator
-REPO_PROMETHEUS_CONFIG_RELOADER?=quay.io/coreos/prometheus-config-reloader
+REPO?=lazypower/prometheus-operator
+REPO_PROMETHEUS_CONFIG_RELOADER?=lazypower/prometheus-config-reloader
 TAG?=$(shell git rev-parse --short HEAD)
 VERSION?=$(shell cat VERSION | tr -d " \t\n\r")
 
@@ -18,7 +18,7 @@ TYPES_V1_TARGET:=pkg/apis/monitoring/v1/types.go
 
 K8S_GEN_VERSION:=release-1.14
 K8S_GEN_BINARIES:=deepcopy-gen informer-gen lister-gen client-gen
-K8S_GEN_ARGS:=--go-header-file $(FIRST_GOPATH)/src/$(GO_PKG)/.header --v=1 --logtostderr
+K8S_GEN_ARGS:=--go-header-file $(PWD)/.header --v=1 --logtostderr
 
 K8S_GEN_DEPS:=.header
 K8S_GEN_DEPS+=$(TYPES_V1_TARGET)
@@ -217,7 +217,7 @@ test-unit:
 .PHONY: test-e2e
 test-e2e: KUBECONFIG?=$(HOME)/.kube/config
 test-e2e:
-	go test -timeout 55m -v ./test/e2e/ $(TEST_RUN_ARGS) --kubeconfig=$(KUBECONFIG) --operator-image=$(REPO):$(TAG) -count=1
+	go test -timeout 55m -v ./test/e2e/ $(TEST_RUN_ARGS) --kubeconfig=$(KUBECONFIG) --operator-image=$(REPO):latest -count=1
 
 ############
 # Binaries #
